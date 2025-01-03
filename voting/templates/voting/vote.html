@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Voting</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Online Voting</h1>
+    </header>
+    <main>
+        <form id="voting-form" action="{% url 'vote' %}" method="POST">
+            {% csrf_token %}
+            {% for item in portfolios_with_candidates %}
+            <div class="portfolio">
+                <h2>{{ item.portfolio.name }}</h2>
+                <div class="candidates">
+                    {% for candidate in item.candidates %}
+                    <div class="candidate">
+                        <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}">
+                        <p>{{ candidate.name }}</p>
+                        <label>
+                            <input type="radio" name="{{ item.portfolio.id }}" value="{{ candidate.id }}" required>
+                            Select
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="submit-section">
+                <button type="submit" id="vote-button">Cast Vote</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
